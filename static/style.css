@@ -261,3 +261,11 @@ body,html{
     border-radius: 7px;
     
 }           
+
+/* eye test: */
+.eyetest form {
+    display: inline-block;
+    
+   
+}
+    

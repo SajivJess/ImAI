@@ -1,7 +1,8 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template,redirect,url_for,session
 import os
 import csv
 import tensorflow as tf
+
 
 #firebase:
 '''
@@ -14,7 +15,18 @@ app=Flask(__name__)
 
 #ML model:
 #model=tf.keras.models.load_model('efficientnetb3-Eye Disease-96.19.h5')
+# Register the custom object in case it's necessary
 
+#try2
+'''
+custom_objects = {
+    'TFOpLambda': tf.keras.layers.Lambda  # This is a generic example; adjust as needed
+}
+
+# Load the model with the custom object scope
+with custom_object_scope(custom_objects):
+    model = tf.keras.models.load_model("C:\\Users\\akash\\OneDrive\\Documents\\imai trial\\efficientnetb3-Eye Disease-96.19.h5")
+'''
 
 
 @app.route('/')
@@ -27,12 +39,26 @@ def session1():
 
 @app.route('/2session',methods=['POST','GET'])
 def session2():
-    return render_template('session2.html')
+    if str(request.form.get('R_line1')) not in'Ee' or str(request.form.get('R_line2')) not in 'FPfp':
+        R_remarks='Low vision'
+
+    elif str(request.form.get('R_line3')) not in 'LPEDlped' or str(request.form.get('R_line4')) not in 'PECFDpecfd' or  str(request.form.get('R_line5')) not in 'EDFCZPedfczp':
+        R_remarks='Near normal vision'
+    else :
+        R_remarks='Normal Vision'
+    #L_remarks= request.args.get('L_remarks')
+    L_remarks = session.get('L_remarks') 
+
+
+
+    return render_template('session2.html',R_remarks=R_remarks,L_remarks=L_remarks)
 
 
 @app.route('/submit',methods=['POST','GET'])
 def submit():
     if request.method=='POST':
+
+        
         first_name=str(request.form['First Name'])
         last_name=str(request.form['Last Name'])
 
@@ -53,12 +79,22 @@ def submit():
         Glaucoma=str(request.form.get('Glaucoma'))
         Macular_Degeneration=str(request.form.get('Macular Degeneration'))
 
+
+        # if str(request.form.get('line1')) not in'Ee' or str(request.form.get('line2')) not in 'FPfp':
+
+
+        L_remarks=request.args.get('L_remarks')
+        R_remarks=request.args.get('R_remarks')
+
+
+
+
         hosp_name=str(request.form['hosp'])
         fundus=request.files['fundus']
 
         # prediction=model.predict(fundus)
 
-        data=[first_name,last_name,age,occupation,gender,prev_eye_surgery,existing_ailments,high_bp,Diabetes,chief_complaints,contact,email,relative_contact,existing_doctor,family_history,Glaucoma,Macular_Degeneration,hosp_name]
+        data=[first_name,last_name,age,occupation,gender,prev_eye_surgery,existing_ailments,high_bp,Diabetes,chief_complaints,contact,email,relative_contact,existing_doctor,family_history,Glaucoma,Macular_Degeneration,L_remarks,R_remarks,hosp_name]
         
        
             
@@ -88,7 +124,7 @@ def submit():
         with open(csv_file,mode='a',newline='') as file:
             writer=csv.writer(file)
             if not file_exists:
-                writer.writerow(['First Name','Last Name','Age','Occupation','Gender','Previous eye surgeries','Existing Ailments','High B.P','Diabetes','Chief Complaints','Contact',"email",'relative_contact','existing_doctor','family_history','Glaucoma','Macular_Degeneration','hosp_name','Hospital Name'])
+                writer.writerow(['First Name','Last Name','Age','Occupation','Gender','Previous eye surgeries','Existing Ailments','High B.P','Diabetes','Chief Complaints','Contact',"email",'relative_contact','existing_doctor','family_history','Glaucoma','Macular_Degeneration','Left eye remarks','Right eye remarks','hosp_name'])
             writer.writerow(data)
         return render_template('submit_page.html')
     else:
@@ -106,8 +142,29 @@ def diagnosis():
     else:
         return 'couldnt find data'
 
+      
+@app.route('/L_eyetest',methods=['POST','GET'])
+def eyetest():
+    return render_template('left_eyetest.html')
 
-            
+
+
+@app.route('/R_eyetest',methods=['POST','GET'])
+def R_eyetest():
+    if str(request.form.get('L_line1')) not in'Ee' or str(request.form.get('L_line2')) not in 'FPfp':
+        L_remarks='Low vision'
+
+    elif str(request.form.get('L_line3')) not in 'LPEDlped' or str(request.form.get('L_line4')) not in 'PECFDpecfd' or  str(request.form.get('L_line5')) not in 'EDFCZPedfczp':
+        L_remarks='Near normal vision'
+    else :
+        L_remarks='Normal Vision'
+
+    session['L_remarks'] = L_remarks 
+    
+    #return redirect(url_for('session2', L_remarks=L_remarks))   
+    
+    return render_template('right_eyetest.html',L_remarks=L_remarks) 
+
 
 '''
 #already done!

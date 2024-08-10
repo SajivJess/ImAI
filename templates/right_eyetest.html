@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>imAI</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+    <!-- <nav class="navigation">
+        <h1>Im(AI)</h1>
+        <ul>
+            <li>About</li>
+            <li>FAQ</li>
+        </ul>
+
+    </nav> -->
+<center>
+    <div class='eyetest'>
+        <img src="{{url_for('static',filename='snellen_eye_chart.png')}}" alt="power chart">
+        <form action="/2session" method="post">
+            <div style=" position: absolute;  top: 71px;">  
+                <!-- <label for="line1">Enter the letters you see:</label> <br> -->
+                <input type="text" id="R_line1" name="R_line1" placeholder="Enter the letters you see:">
+            </div>
+
+            <div style=" position: absolute;  top:  226px ;">
+                <!-- <label for="R_line2">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line2" name="R_line2" placeholder="Enter the letters you see:">
+            </div>
+
+            <div style=" position: absolute;  top: 326px ;">
+                <!-- <label for="R_line3">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line3" name="R_line3" placeholder="Enter the letters you see:">
+            </div>
+
+            <div style=" position: absolute;  top: 391px ;">
+                <!-- <label for="R_line4">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line4" name="R_line4" placeholder="Enter the letters you see:">
+            </div>
+
+            <div style=" position: absolute;  top: 445px ;">
+                <!-- <label for="R_line5">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line5 " name="R_line5" placeholder="Enter the letters you see:">
+            </div>      
+
+            <div style=" position: absolute;  top: 524px ;">
+                <!-- <label for="R_line6">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line6 " name="R_line6" placeholder="Enter the letters you see:">
+            </div> 
+
+            <div style=" position: absolute;  top: 581px ;">
+                <!-- <label for="R_line7">Enter the letters you see: </label><br> -->
+                <input type="text" id="R_line7 " name="R_line7" placeholder="Enter the letters you see:">
+            </div> 
+
+            <div style=" position: absolute;  top: 656px ;">
+                <!-- <label for="R_line8">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line8 " name="R_line8" placeholder="Enter the letters you see:">
+            </div> 
+
+
+            <div style=" position: absolute;  top: 705px ;">
+                <!-- <label for="R_line9">Enter the letters you see:</label><br> -->
+                <input type="text" id="R_line9 " name="R_line9" placeholder="Enter the letters you see:">
+            </div> 
+
+            <div style="position:fixed; top: 400px; right: 250px;" >
+                <input type="submit" value="submit">        
+            </div>
+        </form>
+
+
+    </div>
+</center>
+    
+</body>
+</html>
